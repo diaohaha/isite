@@ -160,6 +160,161 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/07/27/Logging/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Diaohaha">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gaoda's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/27/Logging/" class="post-title-link" itemprop="url">Mysql中的WAL（预写日志）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-27 15:38:21" itemprop="dateCreated datePublished" datetime="2021-07-27T15:38:21+08:00">2021-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:23:31" itemprop="dateModified" datetime="2021-08-04T10:23:31+08:00">2021-08-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>WAL(Write Ahead Log)预写日志，是数据库系统中常见的一种手段，用于保证数据操作的原子性和持久性。</p>
+<h3 id="Mysql数据页"><a href="#Mysql数据页" class="headerlink" title="Mysql数据页"></a>Mysql数据页</h3><p>mysql的page与文件系统的block类似，是mysql自己定义的读取和写入磁盘的最小单位，其目的是为了充分的利用磁盘的顺序访问速度快的优势。一般是磁盘扇区的4~16倍。通常Mysql的page大小为16kb。</p>
+<p>当内存数据页跟磁盘数据页内容不一致的时候，我们成这个内存页为“脏页”。内存数据写入磁盘后，内存和磁盘上的数据页内容就一致了，称为“干净页”。MySQL从内存更新到磁盘的过程，称为刷脏页的过程（flush）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/27/Logging/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/07/14/Mysql-%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Diaohaha">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gaoda's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/14/Mysql-%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">Mysql-主从同步</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-14 17:07:31" itemprop="dateCreated datePublished" datetime="2021-07-14T17:07:31+08:00">2021-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:21:57" itemprop="dateModified" datetime="2021-08-04T10:21:57+08:00">2021-08-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数据库随着越来越多的请求，我们将数据库的写操作和读操作进行分离， 使用多个从库副本（Slaver Replication）负责读，使用主库（Master）负责写， 从库从主库同步更新数据，保持数据一致。架构上就是数据库主从同步。 从库可以水平扩展，所以更多的读请求不成问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/14/Mysql-%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/07/12/Golang%E9%99%90%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -174,7 +329,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/12/Golang%E9%99%90%E6%B5%81/" class="post-title-link" itemprop="url">Golang提供得限流包</a>
+            <a href="/2021/07/12/Golang%E9%99%90%E6%B5%81/" class="post-title-link" itemprop="url">Golang中的服务限流</a>
         </h2>
 
         <div class="post-meta">
@@ -183,10 +338,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-07-12 16:32:41 / Modified: 16:55:32" itemprop="dateCreated datePublished" datetime="2021-07-12T16:32:41+08:00">2021-07-12</time>
+              <time title="Created: 2021-07-12 16:32:41" itemprop="dateCreated datePublished" datetime="2021-07-12T16:32:41+08:00">2021-07-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:21:42" itemprop="dateModified" datetime="2021-08-04T10:21:42+08:00">2021-08-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -210,17 +371,14 @@
       
           <h2 id="服务限流"><a href="#服务限流" class="headerlink" title="服务限流"></a>服务限流</h2><p>服务限流指的是设置服务能支持得最大并发访问量，超过阈值则拒绝；限流阈值得设置通常分两种类型一种是Qps，一种是Concurrency。限流通常使用令牌桶来实现。</p>
 <p>令牌桶算法是网络流量整形（Traffic Shaping）和速率限制（Rate Limiting）中最常使用的一种算法。大小固定的令牌桶可自行以恒定的速率源源不断地产生令牌。当有新的请求的到来时需要先申请令牌桶取一定数量的令牌。取不到时返回错误，以此来实现限流。</p>
-<h2 id="Golang中的限流包time-rate"><a href="#Golang中的限流包time-rate" class="headerlink" title="Golang中的限流包time/rate"></a>Golang中的限流包time/rate</h2><h3 id="构造一个限流器"><a href="#构造一个限流器" class="headerlink" title="构造一个限流器"></a>构造一个限流器</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limiter := NewLimiter(<span class="number">10</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.第一个参数是 r Limit。代表每秒可以向 Token 桶中产生多少 token。Limit 实际上是 float64 的别名。</span><br><span class="line">2.第二个参数是 b int。b 代表 Token 桶的容量大小。</span><br></pre></td></tr></table></figure>
-
-<p>用r来限制qps，用b来限制concurrentcy。</p>
-<h3 id="Allow-AllowN"><a href="#Allow-AllowN" class="headerlink" title="Allow/AllowN"></a>Allow/AllowN</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(lim *Limiter)</span> <span class="title">Allow</span><span class="params">()</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(lim *Limiter)</span> <span class="title">AllowN</span><span class="params">(now time.Time, n <span class="keyword">int</span>)</span> <span class="title">bool</span></span></span><br></pre></td></tr></table></figure>
-
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/12/Golang%E9%99%90%E6%B5%81/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -515,10 +673,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-06-07 17:39:17 / Modified: 18:35:31" itemprop="dateCreated datePublished" datetime="2021-06-07T17:39:17+08:00">2021-06-07</time>
+              <time title="Created: 2021-06-07 17:39:17" itemprop="dateCreated datePublished" datetime="2021-06-07T17:39:17+08:00">2021-06-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:23:14" itemprop="dateModified" datetime="2021-08-04T10:23:14+08:00">2021-08-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -542,42 +706,14 @@
       
           <h4 id="HTTP-0-9"><a href="#HTTP-0-9" class="headerlink" title="HTTP 0.9"></a>HTTP 0.9</h4><p>1991年， 万维网协会（World Wide Web Consortium，W3C）和互联网工程任务组（IETF）制定了 HTTP 0.9 标准。因为那个年代互联网还在普及，加上网速带宽低，所以 HTTP 0.9 只支持 GET 请求。</p>
 <h4 id="HTTP-1-0"><a href="#HTTP-1-0" class="headerlink" title="HTTP 1.0"></a>HTTP 1.0</h4><p>1996 年 5 月，HTTP/1.0 版本发布，HTTP 协议新增很多内容。首先是请求方式的多样化，从单一的 GET 请求，增加了 POST 命令和 HEAD 命令。除此之外，还支持发送任何格式的内容。这两项新增内容，不仅使得互联网不仅可以传输文字、传输图像、视频、二进制文件，还丰富了浏览器与服务器的互动方式。这为互联网的大发展奠定了基础。</p>
-<p>再次，HTTP请求和回应的格式也变了。除了数据部分，每次通信都必须包括头信息（HTTP header），用来描述一些元数据。其他的新增功能还包括状态码（status code）、多字符集支持、多部分发送（multi-part type）、权限（authorization）、缓存（cache）、内容编码（content encoding）等。</p>
-<p>但 HTTP/1.0 还是存在缺点：</p>
-<ul>
-<li><p>第一点是：连接无法复用。HTTP 1.0 规定浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接，服务器完成请求处理后立即断开TCP连接，服务器不跟踪每个客户也不记录过去的请求。如果还要请求其他资源，就必须再新建一个连接。</p>
-</li>
-<li><p>第二点是：Head-Of-Line Blocking（HOLB，队头阻塞）。HOLB 是指一系列包（package）因为第一个包被阻塞；当页面中需要请求很多资源的时候，HOLB 会导致在达到最大请求数量时，剩余的资源需要等待其它资源请求完成后才能发起请求。这会导致带宽无法被充分利用，以及后续健康请求被阻塞。</p>
-</li>
-</ul>
-<h4 id="HTTP-1-1"><a href="#HTTP-1-1" class="headerlink" title="HTTP 1.1"></a>HTTP 1.1</h4><p>W3C 组织为了解决 HTTP 1.0 遗留的问题，在 1997 年 1 月，发布 HTTP/1.1 版本，只比 1.0 版本晚了半年。它进一步完善了 HTTP 协议，一直用到了20年后的今天，直到现在还是最流行的版本。具体优化点：</p>
-<ol>
-<li><p>缓存处理。在 HTTP 1.0 中主要使用 header 里的 If-Modified-Since,Expires 来做为缓存判断的标准，HTTP 1.1则引入了更多的缓存控制策略例如 Entity tag，If-Unmodified-Since, If-Match, If-None-Match等更多可供选择的缓存头来控制缓存策略。</p>
-</li>
-<li><p>带宽优化及网络连接的使用。针对网络开销大的问题，HTTP 1.1 在请求头引入了range头域，它允许只请求资源的某个部分，即返回码是206（Partial Content），这样就方便了开发者自由的选择以便于充分利用带宽和连接。</p>
-</li>
-<li><p>错误通知的管理。在HTTP1.1中新增了24个错误状态响应码。 </p>
-</li>
-<li><p>长链接。HTTP/1.1 加入 Connection：keep-alive 可以复用一部分连接，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟。</p>
-</li>
-</ol>
-<p>随着网络的发展，HTTP 1.1 还是暴露出一些局限性。</p>
-<ol>
-<li><p>虽然加入 keep-alive 可以复用一部分连接，但域名分片等情况下仍然需要建立多个 connection，耗费资源，给服务器带来性能压力。</p>
-</li>
-<li><p>pipeling 只部分解决了 HOLB。HTTP 1.1 尝试使用 pipeling 来解决队头阻塞问题，即浏览器可以一次性发出多个请求（同个域名、同一条 TCP 链接）。但 pipeling 要求返回是按序的，那么前一个请求如果很耗时（比如处理大图片），那么后面的请求即使服务器已经处理完，仍会等待前面的请求处理完才开始按序返回。</p>
-</li>
-<li><p>协议开销大。HTTP/1 在使用时，header 里携带的内容过大，在一定程度上增加了传输的成本，并且每次请求 header 基本不怎么变化，尤其在移动端增加用户流量。</p>
-</li>
-</ol>
-<h4 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP 2.0"></a>HTTP 2.0</h4><p>互联网的发展还是受到网络速度的限制。有个调侃的话，永远不要忽略一辆载满磁带的在高速公路上飞驰的卡车的带宽。大概意思说数据量大到一定程度时，物理运输无论是速度、安全性、便捷性都比网络传输好。</p>
-<p>谷歌是业务首先提出云计算的概念；加上谷歌的公司文化特点是自己内部信息公开、透明，每个人都能了解到其他任何人当前的工作计划、代码等。谷歌为了解决内部系统传输数据慢的问题，自行研发的 SPDY 协议，目的是以最小化网络延迟，提升网络速度，解决 HTTP/1.1 效率不高的问题。</p>
-<p>SPDY 协议是在 TCP 协议之上。相比 HTTP/1 的文本格式，HTTP/2 采用二进制格式传输数据，解析起来更高效。同时，还支持对 Header 压缩，减少头部的包体积大小。</p>
-<p><img src="http://runnerliu.github.io/images/2020-10-25T152800.png"></p>
-<p>HTTP 2.0 还引入了多路复用技术。多路复用很好地解决了浏览器限制同一个域名下的请求数量的问题，同时也更容易实现全速传输，毕竟新开一个 TCP 连接都需要慢慢提升传输速度。</p>
-<p>谷歌于2009 年公开了 SPDY 协议，W3C 组织协议不错。于是乎，W3C 将 SPDY 协议引入到 HTTP 协议中，在 2012 年发布 HTTP 2.0。</p>
-<h4 id="HTTP-3-0"><a href="#HTTP-3-0" class="headerlink" title="HTTP 3.0"></a>HTTP 3.0</h4><p>不得不说谷歌的技术确实牛逼，TCP 协议虽然能保证不丢包，但还是存在一些局限性。谷歌为了提高Web联网的速度决定推倒重来，吸收 TCP 快速打开的技术，缓存当前会话的上下文等优点，基于 UDP 协议研发一种名为QUIC （全称是“快速UDP互联网连接”）的实验性网络协议，并且使用运用在 Chrome 浏览器上。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/07/HTTP%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -619,10 +755,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-04-19 15:21:10 / Modified: 15:52:57" itemprop="dateCreated datePublished" datetime="2021-04-19T15:21:10+08:00">2021-04-19</time>
+              <time title="Created: 2021-04-19 15:21:10" itemprop="dateCreated datePublished" datetime="2021-04-19T15:21:10+08:00">2021-04-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:22:29" itemprop="dateModified" datetime="2021-08-04T10:22:29+08:00">2021-08-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -650,63 +792,14 @@
 </blockquote>
 <h2 id="TCP-的连接与断开"><a href="#TCP-的连接与断开" class="headerlink" title="TCP 的连接与断开"></a>TCP 的连接与断开</h2><p>现代浏览器在与服务器建立了一个 TCP 连接后是否会在一个 HTTP 请求完成后断开呢？</p>
 <p>如果会，那什么情况下会断开？</p>
-<p>在 HTTP/0.9 版本中，HTTP 请求是以短连接进行的，因此在发送完 HTTP 的响应之后，服务器就会断开 TCP 连接。</p>
-<p>可是这样是一件很耗资源、很耗时间的事情，所以在 1.0 版本中，新增了 keep-alive 字段，让长连接被 HTTP 支持了（此时默认还是不会开启长连接）。</p>
-<p>所谓长连接，就是完成这个 HTTP 请求之后，不要断开 HTTP 请求使用的 TCP 连接。好处是连接可以被重新使用，之后发送 HTTP 请求的时候就不需要重新建立 TCP 连接了，以及如果维持连接，那么 SSL 的开销也可以避免。</p>
-<p>好处如此之多，所以 HTTP/1.1 就把 Connection: keep-alive 头写进了标准，并且默认开启持久连接。</p>
-<p>你必须在请求中声明：Connection: close 才会让每次 HTTP 请求都重新建立 TCP 连接。</p>
-<p>因此我们有了答案：</p>
-<ul>
-<li>如果是「短连接」，那么一次 TCP 连接就只能对应一次 HTTP 请求；</li>
-<li>如果是「长连接」，那么一次 TCP 连接就可以发送多个 HTTP 请求了。</li>
-</ul>
-<h2 id="可以同时发送多个-HTTP-请求吗？"><a href="#可以同时发送多个-HTTP-请求吗？" class="headerlink" title="可以同时发送多个 HTTP 请求吗？"></a>可以同时发送多个 HTTP 请求吗？</h2><p>在 HTTP/1.1 协议中存在一个问题：单个 TCP 连接在一个时刻只能处理一个请求。</p>
-<p>也就是说你一个请求处理完了才能处理下一个请求。</p>
-<p>这就要看看 Pipelining 了，所谓 pipe 就是管道，而 Pipelining 是 HTTP/1.1 规范中的字段，意为 HTTP 流水线（英语：HTTP pipelining）。</p>
-<p>它能将多个 HTTP 请求整批提交，在发送过程中不需先等待服务器的回应。</p>
-<p>但唯一的问题在于，这个东西在浏览器中是默认关闭的。</p>
-<p>因为该技术存在很多问题：</p>
-<ul>
-<li>一些代理服务器不能正确的处理 HTTP Pipelining；</li>
-<li>正确的流水线实现是复杂的；</li>
-<li>Head-of-line Blocking 连接头阻塞：在建立起一个 TCP 连接之后，假设客户端在这个连接连续向服务器发送了几个请求。按照标准，服务器应该按照收到请求的顺序返回结果，假设服务器在处理首个请求时花费了大量时间，那么后面所有的请求都需要等着首个请求结束才能响应。</li>
-</ul>
-<p>但是，HTTP2 提供了 Multiplexing 多路传输特性，让我们可以在一个 TCP 连接中同时完成多个 HTTP 请求。</p>
-<p>所以，在 HTTP/1.1 时代，浏览器提高页面加载效率的方法主要有下面两种：</p>
-<ul>
-<li>维持和服务器已经建立的 TCP 连接，在同一连接上顺序处理多个请求；</li>
-<li>和服务器建立多个 TCP 连接。</li>
-</ul>
-<h2 id="浏览器对同一-host-的-TCP-连接上限"><a href="#浏览器对同一-host-的-TCP-连接上限" class="headerlink" title="浏览器对同一 host 的 TCP 连接上限"></a>浏览器对同一 host 的 TCP 连接上限</h2><p>假设我们还处在 HTTP/1.1 时代，那个时候没有多路传输。</p>
-<p>当浏览器拿到一个有几十张图片的网页该怎么办呢？</p>
-<p>肯定不能只开一个 TCP 连接顺序下载，那样用户肯定等的很难受。但是如果每个图片都开一个 TCP 连接发 HTTP 请求，那电脑或者服务器都可能受不了——要是有 1000 张图片的话总不能开 1000 个 TCP 连接吧。</p>
-<p>所以浏览器允许我们对同一 host 开启多个 TCP 连接，每个浏览器的数量是不一样的。Chrome 最多允许对同一个 Host 建立六个 TCP 连接。</p>
-<p>如果图片都是 HTTPS 连接并且在同一个域名下，那么浏览器在 SSL 握手之后会和服务器商量能不能用 HTTP2，如果能的话就使用 Multiplexing 功能在这个连接上进行多路传输。</p>
-<p>不过也未必会所有挂在这个域名的资源都会使用一个 TCP 连接去获取，但是可以确定的是 Multiplexing 很可能会被用到。</p>
-<p>如果发现用不了 HTTP2 呢？或者用不了 HTTPS（现实中的 HTTP2 都是在 HTTPS 上实现的，所以也就是只能使用 HTTP/1.1）呢？</p>
-<p>那浏览器就会在一个 HOST 上建立多个 TCP 连接，连接数量的最大限制取决于浏览器设置。这些连接会在空闲的时候被浏览器用来发送新的请求。</p>
-<p>如果所有的连接都正在发送请求呢？那其他的请求就只能等等了。</p>
-<h2 id="可以有多少TCP连接数"><a href="#可以有多少TCP连接数" class="headerlink" title="可以有多少TCP连接数"></a>可以有多少TCP连接数</h2><p>如何标识一个TCP连接？</p>
-<blockquote>
-<p>在确定最大连接数之前，先来看看系统如何标识一个tcp连接。系统用一个4四元组来唯一标识一个TCP连接：{local ip, local port,remote ip,remote port}。</p>
-</blockquote>
-<p>client最大tcp连接数.</p>
-<blockquote>
-<p>client每次发起tcp连接请求时，除非绑定端口，通常会让系统选取一个空闲的本地端口（local port），该端口是独占的，不能和其他tcp连接共享。tcp端口的数据类型是unsigned short，因此本地端口个数最大只有65536，端口0有特殊含义，不能使用，这样可用端口最多只有65535，所以在全部作为client端的情况下，最大tcp连接数为65535，这些连接可以连到不同的server ip。</p>
-</blockquote>
-<p>server最大tcp连接数. (理论值)</p>
-<blockquote>
-<p>server通常固定在某个本地端口上监听，等待client的连接请求。不考虑地址重用（unix的SO_REUSEADDR选项）的情况下，即使server端有多个ip，本地监听端口也是独占的，因此server端tcp连接4元组中只有remote ip（也就是client ip）和remote port（客户端port）是可变的，因此最大tcp连接为客户端ip数×客户端port数，对IPV4，不考虑ip地址分类等因素，最大tcp连接数约为2的32次方（ip数）×2的16次方（port数），也就是server端单机最大tcp连接数约为2的48次方。</p>
-</blockquote>
-<p>实际的tcp连接数。</p>
-<blockquote>
-<p>上面给出的是理论上的单机最大连接数，在实际环境中，受到机器资源、操作系统等的限制，特别是sever端，其最大并发tcp连接数远不能达到理论上限。在unix/linux下限制连接数的主要因素是内存和允许的文件描述符个数（每个tcp连接都要占用一定内存，每个socket就是一个文件描述符），另外1024以下的端口通常为保留端口。在默认2.6内核配置下，经过试验，每个socket占用内存在15~20k之间。</p>
-</blockquote>
-<p>查看当前机器的TCP连接数量</p>
-<blockquote>
-<p>netstat -n | awk ‘/^tcp/ {++state[$NF]} END {for(key in state) print key,”\t”,state[key]}’</p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/19/HTTP%E4%B8%AD%E7%9A%84TCP%E8%BF%9E%E6%8E%A5-md/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -821,10 +914,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-02-18 18:13:53 / Modified: 18:21:58" itemprop="dateCreated datePublished" datetime="2021-02-18T18:13:53+08:00">2021-02-18</time>
+              <time title="Created: 2021-02-18 18:13:53" itemprop="dateCreated datePublished" datetime="2021-02-18T18:13:53+08:00">2021-02-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-04 10:24:07" itemprop="dateModified" datetime="2021-08-04T10:24:07+08:00">2021-08-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -853,156 +952,14 @@
 <p>开发问题（每次做DELETE 或者UPDATE都必须考虑外键约束，会导致开发的时候很痛苦,测试数据极为不方便）；性能问题（增删数据都需要检查其他table），并发问题（修改数据需要额外的锁，高并发场景容易产生死锁），扩展性问题（分库分表时外键会失效）</p>
 </blockquote>
 <hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/02/01/%E5%89%8D%E7%AB%AF%E6%9C%AF%E8%AF%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Diaohaha">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gaoda's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/01/%E5%89%8D%E7%AB%AF%E6%9C%AF%E8%AF%AD/" class="post-title-link" itemprop="url">前端术语</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-02-01 14:19:00 / Modified: 15:08:06" itemprop="dateCreated datePublished" datetime="2021-02-01T14:19:00+08:00">2021-02-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%AF%E8%AF%AD/" itemprop="url" rel="index"><span itemprop="name">术语</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="webSocket"><a href="#webSocket" class="headerlink" title="webSocket"></a>webSocket</h2><p>早期，很多网站为了实现推送技术，所用的技术都是轮询。轮询是指由浏览器每隔一段时间（如每秒）向服务器发出HTTP请求，然后服务器返回最新的数据给客户端。这种传统的模式带来很明显的缺点，即浏览器需要不断的向服务器发出请求，然而HTTP请求与回复可能会包含较长的头部，其中真正有效的数据可能只是很小的一部分，所以这样会消耗很多带宽资源。</p>
-<p>比较新的轮询技术是Comet。这种技术虽然可以实现双向通信，但仍然需要反复发出请求。而且在Comet中普遍采用的HTTP长连接也会消耗服务器资源。</p>
-<p>在这种情况下，HTML5定义了WebSocket协议，能更好的节省服务器资源和带宽，并且能够更实时地进行通讯。</p>
-<blockquote>
-<p>WebSocket是一种与HTTP不同的协议。两者都位于OSI模型的应用层，并且都依赖于传输层的TCP协议。 虽然它们不同，但是RFC 6455中规定：it is designed to work over HTTP ports 80 and 443 as well as to support HTTP proxies and intermediaries（WebSocket通过HTTP端口80和443进行工作，并支持HTTP代理和中介），从而使其与HTTP协议兼容。 为了实现兼容性，WebSocket握手使用HTTP Upgrade头[1]从HTTP协议更改为WebSocket协议。</p>
-</blockquote>
-<blockquote>
-<p>WebSocket协议支持Web浏览器（或其他客户端应用程序）与Web服务器之间的交互，具有较低的开销，便于实现客户端与服务器的实时数据传输。 服务器可以通过标准化的方式来实现，而无需客户端首先请求内容，并允许消息在保持连接打开的同时来回传递。通过这种方式，可以在客户端和服务器之间进行双向持续对话。 通信通过TCP端口80或443完成，这在防火墙阻止非Web网络连接的环境下是有益的。另外，Comet之类的技术以非标准化的方式实现了类似的双向通信。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/01/28/Python-with.as%E8%AF%AD%E5%8F%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Diaohaha">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gaoda's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/28/Python-with.as%E8%AF%AD%E5%8F%A5/" class="post-title-link" itemprop="url">python-with as语句</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-28 17:38:13 / Modified: 17:42:43" itemprop="dateCreated datePublished" datetime="2021-01-28T17:38:13+08:00">2021-01-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="With语句是什么？"><a href="#With语句是什么？" class="headerlink" title="With语句是什么？"></a>With语句是什么？</h4><p>有一些任务，可能事先需要设置，事后做清理工作。对于这种场景，Python的with语句提供了一种非常方便的处理方式。一个很好的例子是文件处理，你需要获取一个文件句柄，从文件中读取数据，然后关闭文件句柄。但是切莫只局限于使用with去处理文件操作，其他类似的场景也可以使用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&quot;&#x2F;tmp&#x2F;foo.txt&quot;) as file:</span><br><span class="line">    data &#x3D; file.read()</span><br></pre></td></tr></table></figure>
-
-<h4 id="with如何工作？"><a href="#with如何工作？" class="headerlink" title="with如何工作？"></a>with如何工作？</h4><p>Python对with的处理还很聪明。基本思想是with所求值的对象必须有一个<strong>enter</strong>()方法，一个<strong>exit</strong>()方法。紧跟with后面的语句被求值后，返回对象的<strong>enter</strong>()方法被调用，这个方法的返回值将被赋值给as后面的变量。当with后面的代码块全部被执行完之后，将调用前面返回对象的<strong>exit</strong>()方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class ThriftClient(object):</span><br><span class="line">    &quot;&quot;&quot; client &quot;&quot;&quot;</span><br><span class="line">    def __init__(self, module, host, port, timeout&#x3D;2000):</span><br><span class="line">        tsocket &#x3D; TSocket.TSocket(host, port)</span><br><span class="line">        tsocket.setTimeout(timeout)</span><br><span class="line">        self.transport &#x3D; TTransport.TBufferedTransport(tsocket)</span><br><span class="line">        self.client &#x3D; module.Client(TBinaryProtocol.TBinaryProtocol(self.transport))</span><br><span class="line"></span><br><span class="line">    def __enter__(self):</span><br><span class="line">        self.transport.open()</span><br><span class="line">        return self.client</span><br><span class="line"></span><br><span class="line">    def __exit__(self, value_type, type, trace):</span><br><span class="line">        self.transport.close()</span><br></pre></td></tr></table></figure>
-<p>实际上，在with后面的代码块抛出任何异常时，<strong>exit</strong>()方法被执行。正如例子所示，异常抛出时，与之关联的type，value和stack trace传给<strong>exit</strong>()方法，因此抛出的ZeroDivisionError异常被打印出来了。开发库时，清理资源，关闭文件等等操作，都可以放在__exit__方法当中。<br>因此，Python的with语句是提供一个有效的机制，让代码更简练，同时在异常产生时，清理工作更简单。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/18/Mysql%E6%80%BB%E7%BB%93/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1086,20 +1043,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
