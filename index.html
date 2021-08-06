@@ -420,10 +420,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-07-09 20:05:40 / Modified: 21:03:17" itemprop="dateCreated datePublished" datetime="2021-07-09T20:05:40+08:00">2021-07-09</time>
+              <time title="Created: 2021-07-09 20:05:40" itemprop="dateCreated datePublished" datetime="2021-07-09T20:05:40+08:00">2021-07-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-06 10:48:25" itemprop="dateModified" datetime="2021-08-06T10:48:25+08:00">2021-08-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -447,7 +453,14 @@
       
           <p>web服务在重启时，正在处理的请求可能会被强制的关闭。这样会影响服务的可用性。所以需要服务优雅退出。</p>
 <p>原理就是先停止端口监听，等没有新的请求过来。然后等一两秒然后再停服务。Golang中signal包里的Notify函数支持订阅信号，程序收到信号后自己来控制shutdown的过程。代码如下:</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GracefullyStop</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">	<span class="comment">//创建监听退出chan</span></span><br><span class="line">	c := <span class="built_in">make</span>(<span class="keyword">chan</span> os.Signal)</span><br><span class="line">	<span class="comment">//监听指定信号 ctrl+c kill</span></span><br><span class="line">	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGUSR1)</span><br><span class="line">	<span class="comment">// 方式1</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> s := <span class="keyword">range</span> c &#123;</span><br><span class="line">			<span class="keyword">switch</span> s &#123;</span><br><span class="line">			<span class="keyword">case</span> syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:</span><br><span class="line">				fmt.Println(<span class="string">&quot;Program Exit...&quot;</span>, s)</span><br><span class="line">				f()</span><br><span class="line">			<span class="keyword">case</span> syscall.SIGUSR1:</span><br><span class="line">				fmt.Println(<span class="string">&quot;usr1 signal&quot;</span>, s)</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				fmt.Println(<span class="string">&quot;other signal&quot;</span>, s)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="comment">// 方式2 select</span></span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-c:</span><br><span class="line">		fmt.Printf(<span class="string">&quot;service stop&quot;</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> _, ok := &lt;-time.After(<span class="number">3</span>); ok &#123;</span><br><span class="line">				os.Exit(<span class="number">-1</span>)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">		f()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// server 启动</span></span><br><span class="line">	server.Start()</span><br><span class="line">	<span class="comment">// server 关闭</span></span><br><span class="line">	GracefullyStop(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="comment">// 停止监听</span></span><br><span class="line">		server.StopListen()</span><br><span class="line">		_, cancel := context.WithTimeout(context.Background(), <span class="number">2</span>*time.Second)</span><br><span class="line">		<span class="keyword">defer</span> cancel()</span><br><span class="line">		<span class="comment">// 关闭</span></span><br><span class="line">		server.Close()</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/09/%E4%BC%98%E9%9B%85%E9%80%80%E5%87%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -497,7 +510,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-08 18:19:48" itemprop="dateModified" datetime="2021-07-08T18:19:48+08:00">2021-07-08</time>
+                <time title="Modified: 2021-08-06 10:42:47" itemprop="dateModified" datetime="2021-08-06T10:42:47+08:00">2021-08-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -524,35 +537,14 @@
 <p><code>Transport Layer Security  传输层安全 </code></p>
 <p>TLS是基于SSL3.0之后升级设计的协议，相当于SSL的后续版本。</p>
 <p><a target="_blank" rel="noopener" href="https://diaohaha.github.io/2019/04/20/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E7%89%B9%E6%80%A7/">信息安全概述</a>中介绍了信息安全中要保证信息的3大特性:保密性（防窃听）、完整性（防篡改）、不可抵赖性（防抵赖）。SSL的设计中对以上特性都进行了考虑，可谓信息安全的集大成者。</p>
-<p>SSL通信的总体思路是使用公钥加密对称密钥，使用对称加密数据。</p>
-<ul>
-<li>为什么不都使用公钥加密？<br><code>对称加密主要为位运算，而非对称加密都是大数相乘，取模。对CPU压力较大。 </code></li>
-</ul>
-<h3 id="SSL握手过程"><a href="#SSL握手过程" class="headerlink" title="SSL握手过程"></a>SSL握手过程</h3><p>SSL会话协商的过程如下：</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/201402/bg2014020502.png"></p>
-<h4 id="1-客户端（ClientHello）"><a href="#1-客户端（ClientHello）" class="headerlink" title="1.客户端（ClientHello）"></a>1.客户端（ClientHello）</h4><p>首先，客户端（通常是浏览器）先向服务器发出加密通信的请求，这被叫做ClientHello请求。请求中包含如下信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">（1） 支持的协议版本，比如TLS 1.0版。</span><br><span class="line"></span><br><span class="line">（2） 一个客户端生成的随机数-A，稍后用于生成&quot;对话密钥&quot;。</span><br><span class="line"></span><br><span class="line">（3） 支持的加密方法，比如RSA公钥加密。</span><br><span class="line"></span><br><span class="line">（4） 支持的压缩方法。</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-服务器回应（SeverHello）"><a href="#2-服务器回应（SeverHello）" class="headerlink" title="2.服务器回应（SeverHello）"></a>2.服务器回应（SeverHello）</h4><p>服务器的回应包含以下内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">（1） 确认使用的加密通信协议版本，比如TLS 1.0版本。如果浏览器与服务器支持的版本不一致，服务器关闭加密通信。</span><br><span class="line"></span><br><span class="line">（2） 一个服务器生成的随机数-B，稍后用于生成&quot;对话密钥&quot;。</span><br><span class="line"></span><br><span class="line">（3） 确认使用的加密方法，比如RSA公钥加密。</span><br><span class="line"></span><br><span class="line">（4） 服务器证书。</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-客户端回应"><a href="#3-客户端回应" class="headerlink" title="3. 客户端回应"></a>3. 客户端回应</h4><p>客户端收到服务器回应以后，首先验证服务器证书。如果证书不是可信机构颁布、或者证书中的域名与实际域名不一致、或者证书已经过期，就会向访问者显示一个警告，由其选择是否还要继续通信。</p>
-<p>如果证书没有问题，客户端就会从证书中取出服务器的公钥。然后，向服务器发送下面三项信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（1） 一个随机数-C。该随机数用服务器公钥加密，防止被窃听。</span><br><span class="line"></span><br><span class="line">（2） 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。</span><br><span class="line"></span><br><span class="line">（3） 客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供服务器校验。</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-服务器的最后回应"><a href="#4-服务器的最后回应" class="headerlink" title="4.服务器的最后回应"></a>4.服务器的最后回应</h4><p>服务器收到客户端的第三个随机数pre-master key之后，计算生成本次会话所用的”会话密钥”。然后，向客户端最后发送下面信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（1）编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送。</span><br><span class="line"></span><br><span class="line">（2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验。</span><br></pre></td></tr></table></figure>
-
-<p>至此，整个握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的HTTP协议，只不过用”会话密钥”加密内容。</p>
-<p>SSL整个握手的过程就是协商出一个安全密钥的过程。那么问题来了，如何在不安全的信道上交换一个密钥呢。</p>
-<h3 id="如何传递密钥"><a href="#如何传递密钥" class="headerlink" title="如何传递密钥"></a>如何传递密钥</h3><p>在不安全的信道上传递加密文件是没有问题的，因为黑客拿到加密文件没有用。但是，如何如何在不安全的信道上安全地传输密钥？</p>
-<p>要解决这个问题，密钥交换算法即DH算法：Diffie-Hellman算法应运而生。</p>
-<p>DH算法解决了密钥在双方不直接传递密钥的情况下完成密钥交换，这个神奇的交换原理完全由数学理论支持。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">我们来看DH算法交换密钥的步骤。假设甲乙双方需要传递密钥，他们之间可以这么做：</span><br><span class="line"></span><br><span class="line">1.甲首选选择一个素数p，例如509，底数g，任选，例如5，随机数a，例如123，然后计算A&#x3D;g^a mod p，结果是215，然后，甲发送p＝509，g&#x3D;5，A&#x3D;215给乙；</span><br><span class="line">2.乙方收到后，也选择一个随机数b，例如，456，然后计算B&#x3D;g^b mod p，结果是181，乙再同时计算s&#x3D;A^b mod p，结果是121；</span><br><span class="line">3.乙把计算的B&#x3D;181发给甲，甲计算s＝B^a mod p的余数，计算结果与乙算出的结果一样，都是121。</span><br><span class="line"></span><br><span class="line">所以最终双方协商出的密钥s是121。注意到这个密钥s并没有在网络上传输。而通过网络传输的p，g，A和B是无法推算出s的，因为实际算法选择的素数是非常大的。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>所以，更确切地说，DH算法是一个密钥协商算法，双方最终协商出一个共同的密钥，而这个密钥不会通过网络传输。</p>
-<p>如果我们把a看成甲的私钥，A看成甲的公钥，b看成乙的私钥，B看成乙的公钥，DH算法的本质就是双方各自生成自己的私钥和公钥，私钥仅对自己可见，然后交换公钥，并根据自己的私钥和对方的公钥，生成最终的密钥secretKey，DH算法通过数学定律保证了双方各自计算出的secretKey是相同的。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/02/%E6%B5%85%E6%9E%90SSL-TSL%E6%9C%BA%E5%88%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -602,7 +594,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-12 16:33:03" itemprop="dateModified" datetime="2021-07-12T16:33:03+08:00">2021-07-12</time>
+                <time title="Modified: 2021-08-06 10:41:41" itemprop="dateModified" datetime="2021-08-06T10:41:41+08:00">2021-08-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -627,11 +619,14 @@
       
           <p>帧的概念在我们的计算机网络课本中，是数据链路层的定义。</p>
 <p><code>所谓数据帧（Data frame），就是数据链路层的协议数据单元，它包括三部分：帧头，数据部分，帧尾。其中，帧头和帧尾包含一些必要的控制信息，比如同步信息、地址信息、差错控制信息等；数据部分则包含网络层传下来的数据，比如IP数据包，等等。</code></p>
-<p>在网络分层架构中，最底层物理层负责比特流的传输，就是根据电流强弱进行数模转换。再上一层的数据链层，传输数据帧，广泛使用的链路层协议以太网定义了MTU为1500，这个限制限制了整个网络中数据包的大小。链路层封装网络层的数据包Packet为Frame，网络层封装传输层的报文Segment为Packet，传输层再封装应用层的消息Message为Segment。网络中实际传输的数据结构为:</p>
-<p><code>[Frame头][IP头][TCP头][应用层DATA][Frame尾]</code></p>
-<p>1500MTU的限制，抛去每一层的头部控制信息，留给data层的大小大概有1450左右字节大小，按照汉字3个字节，大概一个报文中可以传输一篇岳阳楼记（300字左右）。当应用层的数据过大时，就需要进行报文的分片与重组，这个过程由ip层来完成，ip的重组还是蛮耗时的，所以我们应用层设计中数据应该尽量控制一个数据包就可以传输。</p>
-<p>我们之前的网络协议的设计中，由物理层，链路层，网络层，传输层来负责数据在网络中的传输，而应用层只需要直接将它的数据send&amp;recv到socket即可，那为什么在HTTP2.0中却又在应用层设计出了帧呢? 因为我们目前的网络设计的并不好。网络如果可以重新设计，一定不会是这个样子，但是作为已经广泛使用的基础设施，已经没有了机会，所以只能在应用层来做手脚。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/23/%E8%B0%88%E8%B0%88HTTP2-0%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -841,10 +836,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-03-11 14:42:51 / Modified: 14:45:18" itemprop="dateCreated datePublished" datetime="2021-03-11T14:42:51+08:00">2021-03-11</time>
+              <time title="Created: 2021-03-11 14:42:51" itemprop="dateCreated datePublished" datetime="2021-03-11T14:42:51+08:00">2021-03-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-06 10:46:22" itemprop="dateModified" datetime="2021-08-06T10:46:22+08:00">2021-08-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -872,7 +873,14 @@
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/idoubi/sql2struct">https://github.com/idoubi/sql2struct</a></p>
 </blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -922,7 +930,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-04 10:24:07" itemprop="dateModified" datetime="2021-08-04T10:24:07+08:00">2021-08-04</time>
+                <time title="Modified: 2021-08-06 10:42:12" itemprop="dateModified" datetime="2021-08-06T10:42:12+08:00">2021-08-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
