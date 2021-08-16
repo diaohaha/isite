@@ -20,25 +20,25 @@
     var CONFIG = {"hostname":"diahhaha.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。  搜索引擎会将正向索引重新构建为倒排索引，即把文件ID对应到关键词的映射转换为关键词到文件ID的映射，每个关键词都对应着一系列的文件，这些文件中都出现这个关键词。  稍作">
+  <meta name="description" content="在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="倒排索引">
-<meta property="og:url" content="http://diahhaha.github.io/2021/08/07/inverted-index/index.html">
+<meta property="og:url" content="http://diahhaha.github.io/2021/05/07/inverted-index/index.html">
 <meta property="og:site_name" content="Gaoda&#39;s Blog">
-<meta property="og:description" content="在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。  搜索引擎会将正向索引重新构建为倒排索引，即把文件ID对应到关键词的映射转换为关键词到文件ID的映射，每个关键词都对应着一系列的文件，这些文件中都出现这个关键词。  稍作">
+<meta property="og:description" content="在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。">
 <meta property="og:locale">
 <meta property="og:image" content="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412193553806.png">
 <meta property="og:image" content="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412175602593.png">
 <meta property="og:image" content="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412175801844.png">
 <meta property="og:image" content="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412192756360.png">
-<meta property="article:published_time" content="2021-08-07T07:34:05.000Z">
-<meta property="article:modified_time" content="2021-08-07T08:50:01.176Z">
+<meta property="article:published_time" content="2021-05-07T07:34:05.000Z">
+<meta property="article:modified_time" content="2021-08-16T12:32:05.191Z">
 <meta property="article:author" content="Diaohaha">
 <meta property="article:tag" content="倒排">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412193553806.png">
 
-<link rel="canonical" href="http://diahhaha.github.io/2021/08/07/inverted-index/">
+<link rel="canonical" href="http://diahhaha.github.io/2021/05/07/inverted-index/">
 
 
 <script id="page-configurations">
@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/08/07/inverted-index/">
+    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/05/07/inverted-index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -193,10 +193,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-08-07 15:34:05 / Modified: 16:50:01" itemprop="dateCreated datePublished" datetime="2021-08-07T15:34:05+08:00">2021-08-07</time>
+              <time title="Created: 2021-05-07 15:34:05" itemprop="dateCreated datePublished" datetime="2021-05-07T15:34:05+08:00">2021-05-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-16 20:32:05" itemprop="dateModified" datetime="2021-08-16T20:32:05+08:00">2021-08-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -219,6 +225,8 @@
 
       
         <p>在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。</p>
+<a id="more"></a>
+
 <p><img src="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412193553806.png"></p>
 <p>搜索引擎会将正向索引重新构建为倒排索引，即把文件ID对应到关键词的映射转换为关键词到文件ID的映射，每个关键词都对应着一系列的文件，这些文件中都出现这个关键词。</p>
 <p><img src="https://mstacks.oss-cn-beijing.aliyuncs.com/mstacks/article/2020-04-12/20200412175602593.png"></p>
@@ -251,12 +259,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/08/07/es-introduce/" rel="prev" title="ElasticSearch简介">
-      <i class="fa fa-chevron-left"></i> ElasticSearch简介
+    <a href="/2021/04/19/HTTP%E4%B8%AD%E7%9A%84TCP%E8%BF%9E%E6%8E%A5-md/" rel="prev" title="HTTP中的TCP使用">
+      <i class="fa fa-chevron-left"></i> HTTP中的TCP使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/08/07/docker-vs-vm/" rel="next" title="Docker与虚拟机">
-      Docker与虚拟机 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/06/07/kafka-introduce/" rel="next" title="Kakfa简介">
+      Kakfa简介 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -441,7 +449,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'blog-comments',
       owner       : 'diaohaha',
       admin       : ['diaohaha'],
-      id          : '08bcf3ce41c675dbb1e07b54de82185b',
+      id          : 'f50f3d02fb50fce6b7c3fdb0e603af6d',
         language: 'zh-CN',
       distractionFreeMode: true
     });

@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/06/23/%E8%B0%88%E8%B0%88HTTP2-0%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7/">
+    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/05/07/inverted-index/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/06/23/%E8%B0%88%E8%B0%88HTTP2-0%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7/" class="post-title-link" itemprop="url">谈谈HTTP2.0中的二进制分帧</a>
+            <a href="/2021/05/07/inverted-index/" class="post-title-link" itemprop="url">倒排索引</a>
         </h2>
 
         <div class="post-meta">
@@ -184,14 +184,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-06-23 11:55:54" itemprop="dateCreated datePublished" datetime="2021-06-23T11:55:54+08:00">2021-06-23</time>
+              <time title="Created: 2021-05-07 15:34:05" itemprop="dateCreated datePublished" datetime="2021-05-07T15:34:05+08:00">2021-05-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-06 10:41:41" itemprop="dateModified" datetime="2021-08-06T10:41:41+08:00">2021-08-06</time>
+                <time title="Modified: 2021-08-16 20:32:05" itemprop="dateModified" datetime="2021-08-16T20:32:05+08:00">2021-08-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -199,7 +199,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HTTP/" itemprop="url" rel="index"><span itemprop="name">HTTP</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
             </span>
 
@@ -214,93 +214,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>帧的概念在我们的计算机网络课本中，是数据链路层的定义。</p>
-<p><code>所谓数据帧（Data frame），就是数据链路层的协议数据单元，它包括三部分：帧头，数据部分，帧尾。其中，帧头和帧尾包含一些必要的控制信息，比如同步信息、地址信息、差错控制信息等；数据部分则包含网络层传下来的数据，比如IP数据包，等等。</code></p>
+          <p>在搜索引擎中每个文件都对应一个文件ID，文件内容被表示为一系列关键词的集合（实际上在搜索引擎索引库中，关键词也已经转换为关键词ID）。例如“文档1”经过分词，提取了20个关键词，每个关键词都会记录它在文档中的出现次数和出现位置。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/06/23/%E8%B0%88%E8%B0%88HTTP2-0%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/06/07/HTTP%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Diaohaha">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gaoda's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/07/HTTP%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/" class="post-title-link" itemprop="url">HTTP发展历程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-06-07 17:39:17" itemprop="dateCreated datePublished" datetime="2021-06-07T17:39:17+08:00">2021-06-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-04 10:23:14" itemprop="dateModified" datetime="2021-08-04T10:23:14+08:00">2021-08-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HTTP/" itemprop="url" rel="index"><span itemprop="name">HTTP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="HTTP-0-9"><a href="#HTTP-0-9" class="headerlink" title="HTTP 0.9"></a>HTTP 0.9</h4><p>1991年， 万维网协会（World Wide Web Consortium，W3C）和互联网工程任务组（IETF）制定了 HTTP 0.9 标准。因为那个年代互联网还在普及，加上网速带宽低，所以 HTTP 0.9 只支持 GET 请求。</p>
-<h4 id="HTTP-1-0"><a href="#HTTP-1-0" class="headerlink" title="HTTP 1.0"></a>HTTP 1.0</h4><p>1996 年 5 月，HTTP/1.0 版本发布，HTTP 协议新增很多内容。首先是请求方式的多样化，从单一的 GET 请求，增加了 POST 命令和 HEAD 命令。除此之外，还支持发送任何格式的内容。这两项新增内容，不仅使得互联网不仅可以传输文字、传输图像、视频、二进制文件，还丰富了浏览器与服务器的互动方式。这为互联网的大发展奠定了基础。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/07/HTTP%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/#more" rel="contents">
+              <a class="btn" href="/2021/05/07/inverted-index/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -971,6 +888,87 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/01/28/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://diahhaha.github.io/2021/01/07/es-introduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Diaohaha">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gaoda's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/07/es-introduce/" class="post-title-link" itemprop="url">ElasticSearch简介</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-07 15:33:23" itemprop="dateCreated datePublished" datetime="2021-01-07T15:33:23+08:00">2021-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-16 20:33:02" itemprop="dateModified" datetime="2021-08-16T20:33:02+08:00">2021-08-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">系统架构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口操作ES，也可以利用Java API。Elasticsearch是用Java开发的，并作为Apache许可条款下的开放源码发布，是当前流行的企业级搜索引擎。设计用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/07/es-introduce/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
